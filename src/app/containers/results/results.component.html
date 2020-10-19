@@ -1,0 +1,106 @@
+<mat-card>
+    <mat-card-header>
+      <div mat-card-avatar class="header-image"></div>
+      <div class="mat-card-container">
+        <mat-card-title></mat-card-title>
+        <mat-card-subtitle><h2></h2></mat-card-subtitle>
+      </div>
+    </mat-card-header>
+  
+    <mat-card-content>
+      <section class="results">
+        <section class="statistics">
+          <h3>Статистика</h3>
+          <span>Вы ответили  на {{ correctAnswersCount }} правильно из {{ totalQuestions }} вопросов.</span>
+          <span>Вы прошли тест за  {{ elapsedMinutes }} минут и {{ elapsedSeconds }} секунд.</span>
+  
+          <div class="quiz-feedback">
+            <div *ngIf="percentage >= 80">
+              <img mat-card-image [src]="CONGRATULATIONS" >
+              <h3>Отлично! </h3>
+            </div>
+            <div *ngIf="percentage >= 60 && percentage < 80">
+              <img mat-card-image [src]="NOT_BAD" >
+              <h3>Неплохо! </h3>
+            </div>
+            <div *ngIf="percentage < 60">
+              <img mat-card-image [src]="TRY_AGAIN" >
+              <h3>Попробуйте ещё раз! </h3>
+            </div>
+  
+            <span *ngIf="elapsedMinutes < 1">Ваш результат {{ percentage }}% (плюс вы прошли тест довольно быстро)!</span>
+            <span *ngIf="elapsedMinutes > 1">Вы ответили {{ percentage }}% правильно.</span>
+          </div>
+        </section>
+  
+        <section class="quizSummary">
+          <details>
+            <summary>Просмотреть более подробную информацию о тесте</summary>
+            <accordion>
+              <!-- <div style="display: flex; justify-content: center; padding-bottom: 10px">
+                <button (click)="expandAll()" style="float: left">Expand all</button>
+                <button (click)="collapseAll()" style="float: right">Collapse all</button>
+              </div> -->
+  
+              <accordion-group #quizQuestion role="tab" *ngFor="let question of allQuestions">
+                <span accordion-heading class="accordion-heading">
+                  <span>
+                    <strong>Вопрос #{{ question.questionId }}: </strong>  <em>{{ question.questionText }}</em>
+                  </span>
+                  <span class="badge badge-secondary float-right pull-right">
+                    <i class="fa" [ngClass]="{'fa-chevron-up': quizQuestion.isOpen, 'fa-chevron-down': !quizQuestion.isOpen}"></i>
+                  </span>
+                </span>
+  
+                <div class="quiz-summary-question">
+                  <div class="quiz-summary-field">
+                    <span>
+                      <span class="leader">Вопрос #{{ question.questionId }}: </span>{{ question.questionText }}
+                    </span>
+                  </div>
+                  <div class="quiz-summary-field">
+                    <span>
+                      <span class="leader">Ваш ответ: </span>
+                      Вариант {{ question.selectedOption }} &mdash; {{ question.options[question.selectedOption - 1].optionText }}
+                      <mat-icon class="correct" *ngIf="question.answer === question.selectedOption">done</mat-icon>
+                      <mat-icon class="incorrect" *ngIf="question.answer !== question.selectedOption">clear</mat-icon>
+                      <span *ngIf="question.selectedOption === ''"> (ответа не было)</span>
+                    </span>
+                  </div>
+                  <div class="quiz-summary-field">
+                    <span>
+                      <span class="leader">Правильный ответ: </span>
+                      Вариант {{ question.answer }} &mdash; {{ question.options[question.answer - 1].optionText }}
+                    </span>
+                  </div>
+                  <div class="quiz-summary-field">
+                    <span>
+                      <span class="leader">Объяснение: </span>
+                      Вариант {{ question.answer }} правильный потому что {{ question.explanation }}.
+                    </span>
+                  </div>
+                </div>
+              </accordion-group>
+            </accordion>
+          </details>
+        </section>
+      </section>
+  
+      <section class="return">
+        <mat-card-actions>
+          <a routerLink="/intro" class="btn">Пройти заного</a>
+        </mat-card-actions>
+      </section>
+  
+      <hr />
+  
+      <section class="challenge-social">
+        <h4>Challenge your friends!</h4>
+        <div class="social-buttons">
+          <a class="btn email"
+             href="mailto:?subject=Результат тестирования&amp;body=Я получил {{ percentage }}%.">Отправить результат</a>
+        </div>
+      </section>
+    </mat-card-content>
+  </mat-card>
+  

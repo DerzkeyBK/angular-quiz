@@ -1,16 +1,60 @@
-import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
-
+import { NgModule, NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+// import { CommonModule } from "@angular/common";
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
+import {BrowserModule} from "@angular/platform-browser";
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatCardModule } from '@angular/material/card';
+import { MatRadioModule, MAT_RADIO_DEFAULT_OPTIONS } from '@angular/material/radio';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { AccordionModule } from 'ngx-bootstrap/accordion';
+import { Route, Router, RouterModule } from '@angular/router';
+import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { IntroductionComponent } from './containers/introduction/introduction.component';
+import { QuestionComponent } from './containers/question/question.component';
+import * as QuestionComponent2 from './components/question/question.component';
+import { ResultsComponent } from './containers/results/results.component';
+
+const routes: Route[] = [
+  { path: 'intro', component: IntroductionComponent, pathMatch: 'full' },
+  { path: 'question', component: QuestionComponent, pathMatch: 'full' },
+  { path: 'question/:questionId', component: QuestionComponent, pathMatch: 'full' },
+  { path: 'results', component: ResultsComponent, pathMatch: 'full' },
+  { path: '', redirectTo: 'intro', pathMatch: 'full' }
+];
+
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    IntroductionComponent,
+    QuestionComponent,
+    QuestionComponent2.QuestionComponent,
+    ResultsComponent,
   ],
   imports: [
-    BrowserModule
+    // CommonModule,
+    BrowserModule,
+    BrowserAnimationsModule,
+    AppRoutingModule,
+    ReactiveFormsModule,
+    MatCardModule,
+    MatRadioModule,
+    MatIconModule,
+    MatButtonModule,
+    NgbModule,
+    AccordionModule.forRoot()
   ],
-  providers: [],
-  bootstrap: [AppComponent]
+  providers: [{
+    provide: MAT_RADIO_DEFAULT_OPTIONS,
+    useValue: { color: 'accent' },
+  }],
+  bootstrap: [ AppComponent ],
+  schemas: [
+    CUSTOM_ELEMENTS_SCHEMA,
+    NO_ERRORS_SCHEMA
+  ]
 })
 export class AppModule { }
